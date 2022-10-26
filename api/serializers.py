@@ -1,0 +1,16 @@
+from rest_framework import serializers
+from django.contrib.auth.models import User
+
+from api.models import Todos
+
+class TodoSerializer(serializers.ModelSerializer):
+    status=serializers.CharField(read_only=True)
+    class Meta:
+        model=Todos
+        fields=["task_name","user","status"]
+
+class RegistrationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=User
+        fields=["first_name","last_name","email","username","password"]
+
