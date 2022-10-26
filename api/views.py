@@ -84,13 +84,13 @@ class UsersView(ModelViewSet):
     serializer_class=RegistrationSerializer
     queryset=User.objects.all()
 
-    def create(self,request,*args,**kw):
-        serializer=RegistrationSerializer(data=request.data)
-        if serializer.is_valid():
-            User.objects.create_user(**serializer.validated_data)
-            return Response(data=serializer.data)
-        else:
-            return Response(data=serializer.errors)
+    # def create(self,request,*args,**kw):
+    #     serializer=RegistrationSerializer(data=request.data)
+    #     if serializer.is_valid():
+    #         User.objects.create_user(**serializer.validated_data)
+    #         return Response(data=serializer.data)
+    #     else:
+    #         return Response(data=serializer.errors)
 
 
 
