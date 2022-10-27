@@ -7,6 +7,7 @@ from api.models import Todos
 from api.serializers import TodoSerializer,RegistrationSerializer
 from rest_framework.decorators import action
 from django.contrib.auth.models import User
+from rest_framework import authentication,permissions
 
 class TodosView(ViewSet):
     def list(self,request,*args,**Kw):
@@ -52,8 +53,12 @@ class TodosView(ViewSet):
 # localhost:8000/api/v1/todos/2/mark_as_done/
 #post
  
-
+#authentication  permission
 class TodosModelViews(ModelViewSet):
+    authentication_classes=[authentication.BasicAuthentication]
+    permission_classes=[permissions.IsAuthenticated] 
+
+
     serializer_class=TodoSerializer
     queryset=Todos.objects.all()
 
