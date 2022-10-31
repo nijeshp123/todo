@@ -1,4 +1,5 @@
-from multiprocessing import managers
+from multiprocessing import context, managers
+from urllib import response
 from django.shortcuts import render
 
 from rest_framework.viewsets import ViewSet,ModelViewSet
@@ -61,6 +62,30 @@ class TodosModelViews(ModelViewSet):
 
     serializer_class=TodoSerializer
     queryset=Todos.objects.all()
+
+    def get_queryset(self):
+        return Todos.objects.filter(user=self.request.user)
+
+    def create(self, request, *args, **kwargs):
+        serializer=TodoSerializer(data=request.data,context={"user":request.user})
+        if serializer.is_valid():
+            serializer.save()
+            return Response(data=serializer.data)
+        else:
+            return Response(data=serializer.errors)
+
+    
+
+    # def perform_create(self, serializer):
+    #     serializer.save(user=self.request.user)
+
+    # def create(self,request,*args,**kw):
+    #     serializer=TodoSerializer(data=request.data)
+    #     if serializer.is_valid():
+    #         Todos.objects.create(**serializer.validated_data,user=request.user)
+    #         return Response(data=serializer.data)
+    #     else:
+    #         return Response(data=serializer.errors)
 
     @action(methods=["GET"],detail=False)
     def pending_todos(self,request,*args,**kw):
